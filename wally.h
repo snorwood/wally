@@ -52,14 +52,14 @@ struct motor {
 typedef struct motor Motor;
 
 /*
-	Struct: XYZ
-	Description: Stores three dimensional float data
+Struct: XYZ
+Description: Stores three dimensional float data
 */
 typedef struct xyz XYZ;
 
 /*
-	Class: Wally
-	Description: Controls an instance of the wally robot
+Class: Wally
+Description: Controls an instance of the wally robot
 */
 class Wally {
 public:
