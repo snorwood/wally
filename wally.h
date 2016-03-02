@@ -15,6 +15,15 @@ const int LR_H = 7;
 const int RR_H = 8;
 const int RR_L = 9;
 
+// Define ultrasonic pins
+const int US_F_E = 1;
+const int US_F_T = 2;
+const int US_R_E = 3;
+const int US_R_T = 4; 
+const int US_MAX_DISTANCE = 200;
+const int US_CONVERT = 58;
+
+// Define accelerometer constants
 const float ADC_CONVERT = 8 * 9.81 / 16384;
 
 // struct xyz -> Base of XYZ
