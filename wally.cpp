@@ -46,3 +46,23 @@ float Wally::readUltrasonic(int address) {
 void Wally::waitButton() {
 	while (!digitalRead(BUTTON));
 }
+
+void Wally::setMotor(Motor m, float speed) {
+	m.speed = speed;
+	speed = speed * SPEED_CONVERT;
+
+	if (speed > 0) {
+		digitalWrite(m.p, speed);
+		digitalWrite(m.n, 0);
+	} else {
+		digitalWrite(m.p, 0);
+		digitalWrite(m.n, speed);
+	}
+}
+
+void Wally::setMotors(float left_speed, float right_speed){
+	setMotor(m_lf, left_speed);
+	setMotor(m_lr, left_speed);
+	setMotor(m_rf, right_speed);
+	setMotor(m_rr, right_speed);
+}
