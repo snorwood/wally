@@ -5,6 +5,7 @@
 #ifndef wally_h
 #define wally_h
 
+#include <Arduino.h>
 #include <Adafruit_MMA8451.h>
 #include <NewPing.h>
 
@@ -61,6 +62,9 @@ public:
 	/* Accelerometer */
 	void calibrateAccelerometer();
 	XYZ readAccelerometer();
+
+	/* Button */
+	void waitButton();
 
 private:
 	/* Acclerometer */

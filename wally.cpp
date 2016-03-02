@@ -1,9 +1,18 @@
 #include "wally.h"
 
 Wally::Wally() {
+	/* Acclerometer */
 	mma = new Adafruit_MMA8451();
+
+	/* Ultrasonic */
 	us_f = new NewPing(US_F_T, US_F_E, US_MAX_DISTANCE);
 	us_r = new NewPing(US_R_T, US_R_E, US_MAX_DISTANCE);
+
+	/* Button */
+	digitalWrite(BUTTON_REF, HIGH);
+	pinMode(BUTTON, INPUT);
+
+	/* Set Motors */
 }
 
 float Wally::convertAccelerometer(int count) {
@@ -32,4 +41,8 @@ float Wally::readUltrasonic(int address) {
 		return us_f->ping() / float(US_CONVERT);
 
 	return us_r->ping() / float(US_CONVERT);
+}
+
+void Wally::waitButton() {
+	while (!digitalRead(BUTTON));
 }
