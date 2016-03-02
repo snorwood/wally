@@ -6,7 +6,8 @@ float adcConvert(int count) {
   return count * ADC_CONVERT;
 }
 
-mma = Adafruit_MMA8451();
+Adafruit_MMA8451 mma = Adafruit_MMA8451();
+XYZ accelerometerOffset;
 
 void calibrateAccelerometer(){
 	accelerometerOffset.x = 0;

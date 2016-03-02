@@ -15,9 +15,6 @@ const int LR_H = 7;
 const int RR_H = 8;
 const int RR_L = 9;
 
-
-
-
 const float ADC_CONVERT = 8 * 9.81 / 16384;
 
 // struct xyz -> Base of XYZ
@@ -32,9 +29,6 @@ struct xyz {
 	Description: Stores three dimensional float data
 */
 typedef struct xyz XYZ;
-
-Adafruit_MMA8451 mma;
-XYZ accelerometerOffset;
 
 float adcConvert(int count);
 
