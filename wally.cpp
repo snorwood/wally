@@ -2,7 +2,7 @@
   wally.cpp - Library for controlling wally the wall climbing robot.
   Created by Team Wall-R-Us, March 1, 2016.
 */
-  
+
 #include "wally.h"
 
 /*
@@ -12,14 +12,17 @@ Description: 	Constructor, initializes components
 Wally::Wally() {
 	/* Acclerometer */
 	mma = new Adafruit_MMA8451();
+	mma->begin();
+  	mma->setRange(MMA8451_RANGE_4_G);
 
 	/* Ultrasonic */
 	us_f = new NewPing(US_F_T, US_F_E, US_MAX_DISTANCE);
 	us_r = new NewPing(US_R_T, US_R_E, US_MAX_DISTANCE);
 
 	/* Button */
-	digitalWrite(BUTTON_REF, HIGH);
 	pinMode(BUTTON, INPUT);
+	pinMode(BUTTON_REF, OUTPUT);
+	digitalWrite(BUTTON_REF, HIGH);
 }
 
 /********** ACCELEROMETER ***********/
