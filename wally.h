@@ -1,6 +1,6 @@
 /*
   wally.h - Library for controlling wally the wall climbing robot.
-  Created by Team Group 2, March 1, 2016.
+  Created by Team Wall-R-Us, March 1, 2016.
 */
 #ifndef wally_h
 #define wally_h
