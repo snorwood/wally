@@ -5,6 +5,10 @@
 
 #include "wally.h"
 
+/**************************************
+				PUBLIC
+**************************************/
+
 /*
 Function: 		Wally
 Description: 	Constructor, initializes components
@@ -23,6 +27,19 @@ Wally::Wally() {
 	pinMode(BUTTON, INPUT);
 	pinMode(BUTTON_REF, OUTPUT);
 	digitalWrite(BUTTON_REF, HIGH);
+
+	/* IR */
+	pinMode(IR, INPUT);
+
+	/* Motors */
+	pinMode(LF_P, OUTPUT);		// Front Left High
+	pinMode(LF_N, OUTPUT);		// Front Left Low
+	pinMode(LR_P, OUTPUT);		// Left Rear High
+	pinMode(LR_N, OUTPUT);		// Left Rear Low
+	pinMode(RF_P, OUTPUT);		// Right Front High
+	pinMode(RF_N, OUTPUT);		// Right Front Low
+	pinMode(RR_P, OUTPUT);		// Right Rear High
+	pinMode(RR_N, OUTPUT);		// Right Rear Low
 }
 
 /********** ACCELEROMETER ***********/
@@ -83,16 +100,43 @@ void Wally::waitButton() {
 
 /*
 Function:		setMotors
-Description:	Sets the speed to drive all motors at
+Description:	Sets the speed to drive all motors separated by left and right
 Parameters:
 	left_speed:	float speed 0%-100% to set left motors
 	right_speed:float speed 0%-100% to set right motors
 */
-void Wally::setMotors(float left_speed, float right_speed){
-	setMotor(m_lf, left_speed);
-	setMotor(m_lr, left_speed);
-	setMotor(m_rf, right_speed);
+void Wally::setMotors(float left_speed, float right_speed) {
 	setMotor(m_rr, right_speed);
+	setMotor(m_lr, left_speed);
+	setMotor(m_lf, left_speed);
+	setMotor(m_rf, right_speed);
+}
+
+/*
+Function:		setMotorsFR
+Description:	Sets the speed to drive all motors separated by front and rear
+Parameters:
+	front_speed:	float speed 0%-100% to set front motors
+	rear_speed:float speed 0%-100% to set rear motors
+*/
+void Wally::setMotorsFR(float front_speed, float rear_speed) {
+	setMotor(m_rr, rear_speed);
+	setMotor(m_lr, rear_speed);
+	setMotor(m_lf, front_speed);
+	setMotor(m_rf, front_speed);
+}
+
+/*
+Function:		readIR
+Description:	Reads the IR sensor
+Returns:		int status of IR sensor on=1, off=0 
+*/
+int Wally::readIR(){
+	int sum = 0;
+	for (int i = 0; i < 5; i++)
+		sum += !digitalRead(IR);
+	
+	return sum >= 3;
 }
 
 /**************************************
@@ -126,10 +170,10 @@ void Wally::setMotor(Motor m, float speed) {
 	speed = speed * SPEED_CONVERT;
 
 	if (speed > 0) {
-		digitalWrite(m.p, speed);
-		digitalWrite(m.n, 0);
+		analogWrite(m.p, speed);
+		analogWrite(m.n, 0);
 	} else {
-		digitalWrite(m.p, 0);
-		digitalWrite(m.n, speed);
+		analogWrite(m.p, 0);
+		analogWrite(m.n, speed);
 	}
 }

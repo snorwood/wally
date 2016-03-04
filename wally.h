@@ -10,7 +10,7 @@
 #include <NewPing.h>
 
 /* Defines Motor Constants */
-const float SPEED_CONVERT = 255 / 100;
+const float SPEED_CONVERT = 255 / 100.0;
 const int LF_P = 3;		// Front Left High
 const int LF_N = 2;		// Front Left Low
 const int LR_P = 7;		// Left Rear High
@@ -35,6 +35,9 @@ const float ADC_CONVERT = 8 * 9.81 / 16384;	// Convert from 14-bit count to m/s^
 /* Define Button Constants */
 const int BUTTON = 40;		// Button input pin
 const int BUTTON_REF = 36;	// Button high reference pin
+
+/* Define IR Constants */
+const int IR = 31;
 
 /* struct xyz: Base of XYZ */
 struct xyz {
@@ -77,6 +80,10 @@ public:
 
 	/* Motors */
 	void setMotors(float left_speed, float right_speed);
+	void setMotorsFR(float front_speed, float rear_speed);
+
+	/* IR */
+	int readIR();
 
 private:
 	/* Acclerometer */
