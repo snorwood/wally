@@ -48,8 +48,8 @@ void Wally_Control::verticalControl() {
 	derr_dt = (err2-err1)/(t2-t1);
 
 	/* Calculate Motor Inputs */
-	ul = kp * err2 + kd * derr_dt;
 	ur = kp * err2 + kd * derr_dt;
+	ul = -ur;
 	wally->setMotors(ul, ur);
 
 	/* Update Stored Values */

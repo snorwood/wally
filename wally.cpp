@@ -79,10 +79,10 @@ Parameters:
 Returns:		Orientation
 */
 Orientation Wally::getOrientation(XYZ acc) {
-	if(acc.x > GRAVITY_THRESHOLD)
+	if(acc.y < -GRAVITY_THRESHOLD)
 		return up;
 
-	if (acc.x < -GRAVITY_THRESHOLD)
+	if (acc.y > GRAVITY_THRESHOLD)
 		return down;
 
 	return flat;
@@ -96,7 +96,7 @@ Parameters:
 Returns:		float theta
 */
 float Wally::getTheta(XYZ acc) {
-	return atan2(acc.x, acc.y);
+	return atan2(acc.x, -acc.y);
 }
 
 /********** ULTRASONIC ***********/
