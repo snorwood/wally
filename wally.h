@@ -31,6 +31,7 @@ const int US_CONVERT = 58;			// Convert from us to cm
 
 /* Define Accelerometer Constants */
 const float ADC_CONVERT = 8 * 9.81 / 16384;	// Convert from 14-bit count to m/s^2
+const float GRAVITY_THRESHOLD = 9.00;
 
 /* Define Button Constants */
 const int BUTTON = 40;		// Button input pin
@@ -39,26 +40,31 @@ const int BUTTON_REF = 36;	// Button high reference pin
 /* Define IR Constants */
 const int IR = 31;
 
-/* struct xyz: Base of XYZ */
-struct xyz {
+/*
+Struct: XYZ
+Description: Stores three dimensional float data
+*/
+struct XYZ {
 	float x;
 	float y;
 	float z;
 };
 
-struct motor {
+/*
+Struct: Motor
+Description: Contains parameters for a motor
+*/
+struct Motor {
 	int p;
 	int n;
 	float speed;
 };
 
-typedef struct motor Motor;
-
-/*
-Struct: XYZ
-Description: Stores three dimensional float data
-*/
-typedef struct xyz XYZ;
+enum Orientation {
+	up,
+	down,
+	flat
+};
 
 /*
 Class: Wally
@@ -74,6 +80,8 @@ public:
 	/* Accelerometer */
 	void calibrateAccelerometer();
 	XYZ readAccelerometer();
+	static Orientation getOrientation(XYZ acc);
+	static float getTheta(XYZ acc);
 
 	/* Button */
 	void waitButton();

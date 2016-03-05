@@ -4,6 +4,7 @@
 */
 
 #include "wally.h"
+#include <math.h>
 
 /**************************************
 				PUBLIC
@@ -68,6 +69,34 @@ XYZ Wally::readAccelerometer() {
 	accData.z = convertAccelerometer(mma->z); 
 
 	return accData;
+}
+
+/*
+Function: 		getOrientation
+Description: 	Determines the orientation of the robot from acceleration
+Parameters:
+	acc:		XYZ acceleration of the robot
+Returns:		Orientation
+*/
+Orientation Wally::getOrientation(XYZ acc) {
+	if(acc.x > GRAVITY_THRESHOLD)
+		return up;
+
+	if (acc.x < -GRAVITY_THRESHOLD)
+		return down;
+
+	return flat;
+}
+
+/*
+Function: 		getTheta
+Description: 	Calculatest the rotation of the robot on the wall
+Parameters:
+	acc:		XYZ acceleration of the robot
+Returns:		float theta
+*/
+float Wally::getTheta(XYZ acc) {
+	return atan2(acc.x, acc.y);
 }
 
 /********** ULTRASONIC ***********/
