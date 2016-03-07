@@ -10,7 +10,7 @@
 
 const float kp = 1;
 const float kd = 1;
-const float MOTOR_LIMIT = 100;
+const float MOTOR_LIMIT = 50;
 
 float defaultThetaR(float t);
 
