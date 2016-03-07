@@ -125,6 +125,14 @@ void Wally::waitButton() {
 	while (!digitalRead(BUTTON));
 }
 
+/*
+Function: 		readButton
+Description:	Returns the status of the button
+*/
+int Wally::readButton() {
+	return digitalRead(BUTTON);
+}
+
 /********** MOTORS ***********/
 
 /*
@@ -153,6 +161,14 @@ void Wally::setMotorsFR(float front_speed, float rear_speed) {
 	setMotor(m_lr, rear_speed);
 	setMotor(m_lf, front_speed);
 	setMotor(m_rf, front_speed);
+}
+
+/*
+Function:		stop
+Description:	Stops the robot
+*/
+void Wally::stop() {
+	setMotors(0,0);
 }
 
 /*

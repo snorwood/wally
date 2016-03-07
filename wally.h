@@ -84,11 +84,13 @@ public:
 	static float getTheta(XYZ acc);
 
 	/* Button */
+	int readButton();
 	void waitButton();
 
 	/* Motors */
 	void setMotors(float left_speed, float right_speed);
 	void setMotorsFR(float front_speed, float rear_speed);
+	void stop();
 
 	/* IR */
 	int readIR();
