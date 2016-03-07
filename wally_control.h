@@ -8,8 +8,6 @@
 
 #include "wally.h"
 
-const float kp = 1000;
-const float kd = 1;
 const float MOTOR_LIMIT = 50;
 
 float defaultThetaR(float t);
@@ -35,7 +33,7 @@ private:
 	int t2 = 0;		// Time new
 	
 	/* Motor Inputs */
-	float speed = 50;
+	float speed = 75;
 	float ul;	// Right motor input
 	float ur;	// Left motor input
 
