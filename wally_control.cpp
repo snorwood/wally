@@ -10,7 +10,7 @@ Function:		WallyControl
 Description:	Initializes control loop
 */
 WallyControl::WallyControl(Wally* wally) {
-	this.wally = wally;
+	this->wally = wally;
 }
 
 /*
@@ -30,9 +30,9 @@ Parameters:
 	theta_r:	Commanded angle theta_r(t)
 */
 void WallyControl::begin(float(*theta_r)(float)) {
-	this.theta_r = theta_r;
+	this->theta_r = theta_r;
 	t1 = micros();
-	theta = Wally.getTheta(wally->readAccelerometer());
+	theta = wally->getTheta(wally->readAccelerometer());
 	err1 = theta_r(0) - theta;
 }
 
@@ -43,14 +43,14 @@ Description:	Run in your loop to give robot vertical control
 void WallyControl::verticalControl() {
 	/* Collect Loop Variables */
 	t2 = micros();
-	theta = Wally.getTheta(wally->readAccelerometer());
+	theta = wally->getTheta(wally->readAccelerometer());
 	err2 = theta_r(t2) - theta;
 	derr_dt = (err2-err1)/(t2-t1);
 
 	/* Calculate Motor Inputs */
-	ur = fmin(MOTOR_LIMIT, fmax(-MOTOR_LIMIT, kp * err2 + kd * derr_dt));
-	ul = -ur;
-	wally->setMotors(50 + ul, 50 + ur);
+	ur = fmin(MOTOR_LIMIT, fmax(-MOTOR_LIMIT, speed + kp * err2 + kd * derr_dt));
+	ul = fmin(MOTOR_LIMIT, fmax(-MOTOR_LIMIT, speed - kp * err2 + kd * derr_dt));;
+	wally->setMotors(ul, ur);
 
 	/* Update Stored Values */
 	t1 = t2;

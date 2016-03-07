@@ -8,7 +8,7 @@
 
 #include "wally.h"
 
-const float kp = 1;
+const float kp = 1000;
 const float kd = 1;
 const float MOTOR_LIMIT = 50;
 
@@ -26,11 +26,16 @@ private:
 	/* Robot */
 	Wally* wally;	// Robot instance
 
+	/* Loop Parameters */
+	float kp = 5;
+	float kd = 100;
+
 	/* Time */
 	int t1 = 0;		// Time previous
 	int t2 = 0;		// Time new
 	
 	/* Motor Inputs */
+	float speed = 50;
 	float ul;	// Right motor input
 	float ur;	// Left motor input
 
