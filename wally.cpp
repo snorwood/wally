@@ -109,10 +109,17 @@ Parameters:
 Returns:		Float of selected ultrasonic distance measurement	
 */
 float Wally::readUltrasonic(int address) {
-	if (address == 0)
-		return us_f->ping() / float(US_CONVERT);
+	float us = 0;
 
-	return us_r->ping() / float(US_CONVERT);
+	if (address == 0)
+		us = us_f->ping() / float(US_CONVERT);
+	else
+		us = us_r->ping() / float(US_CONVERT);
+
+	if (us < US_MIN_DISTANCE)
+		return US_MIN_DISTANCE;
+	
+	return us;
 }
 
 /********** BUTTON ***********/

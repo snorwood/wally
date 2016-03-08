@@ -26,7 +26,8 @@ const int US_F_T = 33;	// Front Trigger
 const int US_R_E = 32;	// Rear Echo
 const int US_R_T = 34; 	// Rear Trigger
 
-const int US_MAX_DISTANCE = 200;	// Maximum detection range
+const float US_MAX_DISTANCE = 200;	// Maximum detection range
+const float US_MIN_DISTANCE = 5;
 const int US_CONVERT = 58;			// Convert from us to cm
 
 /* Define Accelerometer Constants */

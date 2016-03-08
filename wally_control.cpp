@@ -48,7 +48,7 @@ void WallyControl::verticalControl() {
 	derr_dt = (err2-err1)/(t2-t1);
 
 	/* Calculate Motor Inputs */
-	float u = kp * err2 + kd * err_dt;
+	float u = kp * err2 + kd * derr_dt;
 	float loop_speed = speed;
 	if (abs(u) > INPUT_LIMIT) {
 		if (u > 0) {
@@ -58,11 +58,12 @@ void WallyControl::verticalControl() {
 		}
 	}
 
-	if loop_speed + u / 2.0 > MOTOR_LIMIT {
+	if (loop_speed + u / 2.0 > MOTOR_LIMIT) {
 		loop_speed = MOTOR_LIMIT - u / 2.0;
-	} else if loop_speed - u / 2.0 < -MOTOR_LIMIT {
+	} else if (loop_speed - u / 2.0 < -MOTOR_LIMIT) {
 		loop_speed = -MOTOR_LIMIT + u / 2.0;
 	}
+
 	ur = loop_speed + u / 2.0;
 	ul = loop_speed - u / 2.0;
 	wally->setMotors(ul, ur);
@@ -70,6 +71,16 @@ void WallyControl::verticalControl() {
 	/* Update Stored Values */
 	t1 = t2;
 	err1 = err2;
+}
+
+/*
+Function:		horizontalControl
+Description:	Run in your loop to give robot horizontal control
+*/
+void WallyControl::horizontalControl() {
+	float x = wally->readUltrasonic(0);
+	float u = hp * x;
+	wally->setMotors(u, u);
 }
 
 /*

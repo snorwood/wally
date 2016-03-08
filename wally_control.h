@@ -8,7 +8,8 @@
 
 #include "wally.h"
 
-const float MOTOR_LIMIT = 50;
+const float MOTOR_LIMIT = 100;
+const float INPUT_LIMIT = 50;
 
 float defaultThetaR(float t);
 
@@ -27,6 +28,7 @@ private:
 	/* Loop Parameters */
 	float kp = 5;
 	float kd = 100;
+	float hp = 10;
 
 	/* Time */
 	int t1 = 0;		// Time previous
