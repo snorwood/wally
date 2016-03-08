@@ -62,9 +62,9 @@ struct Motor {
 };
 
 enum Orientation {
-	up,
-	down,
-	flat
+	UP,
+	DOWN,
+	FLAT
 };
 
 /*

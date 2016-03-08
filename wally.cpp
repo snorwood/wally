@@ -80,12 +80,12 @@ Returns:		Orientation
 */
 Orientation Wally::getOrientation(XYZ acc) {
 	if(acc.y < -GRAVITY_THRESHOLD)
-		return up;
+		return UP;
 
 	if (acc.y > GRAVITY_THRESHOLD)
-		return down;
+		return DOWN;
 
-	return flat;
+	return FLAT;
 }
 
 /*
