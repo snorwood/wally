@@ -25,9 +25,9 @@ private:
 	Wally* wally;	// Robot instance
 
 	/* Loop Parameters */
-	float kp = 5;
+	float kp = 1;
 	float kd = 100;
-	float hp = 10;
+	float hp = 2;
 
 	/* Time */
 	int t1 = 0;		// Time previous
