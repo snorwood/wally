@@ -17,9 +17,8 @@ class WallyControl {
 public:
 	WallyControl(Wally* wally);
 	void begin();
-	void begin(float(*theta_r)(float));
-	void verticalControl();
-	void horizontalControl();
+	void verticalControl(float time_us, float speed, float theta_r);
+	void horizontalControl(float time_us, float x_r);
 
 private:
 	/* Robot */
@@ -32,16 +31,13 @@ private:
 
 	/* Time */
 	int t1 = 0;		// Time previous
-	int t2 = 0;		// Time new
 	
 	/* Motor Inputs */
-	float speed = 75;
 	float ul;	// Right motor input
 	float ur;	// Left motor input
 
 	/* Theta */
-	float(*theta_r)(float); // Command theta_r function
-	float theta= 0;			// Current theta
+	float theta = 0;		// Current theta
 	float err1 = 0;			// Theta error previous
 	float err2 = 0;			// Theta error new
 	float derr_dt = 0;		// delta error / dt
