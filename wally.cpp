@@ -50,9 +50,7 @@ Function: 		calibrateAccelerometer
 Description: 	Calibrates the accelerometer offset based on current reading
 */
 void Wally::calibrateAccelerometer(){
-	accelerometerOffset.x = 0;
-	accelerometerOffset.y = 0;
-	accelerometerOffset.z = 0;
+	accelerometerOffset = readAccelerometer();
 }
 
 /*
@@ -64,8 +62,8 @@ XYZ Wally::readAccelerometer() {
 	XYZ accData;
 	
 	mma->read();
-	accData.x = convertAccelerometer(mma->x);
-	accData.y = convertAccelerometer(mma->y);
+	accData.x = convertAccelerometer(mma->x) - accelerometerOffset.x;
+	accData.y = convertAccelerometer(mma->y) - accelerometerOffset.y;
 	accData.z = convertAccelerometer(mma->z); 
 
 	return accData;
@@ -80,10 +78,10 @@ Returns:		Orientation
 */
 Orientation Wally::getOrientation(XYZ acc) {
 	if(acc.y < -GRAVITY_THRESHOLD)
-		return UP;
+		return DOWN;
 
 	if (acc.y > GRAVITY_THRESHOLD)
-		return DOWN;
+		return UP;
 
 	return FLAT;
 }
@@ -130,6 +128,8 @@ Description:	Waits until the button is pressed
 */
 void Wally::waitButton() {
 	while (!digitalRead(BUTTON));
+	while (digitalRead(BUTTON));
+	delay(DEBOUNCE);
 }
 
 /*
@@ -226,6 +226,6 @@ void Wally::setMotor(Motor m, float speed) {
 		analogWrite(m.n, 0);
 	} else {
 		analogWrite(m.p, 0);
-		analogWrite(m.n, speed);
+		analogWrite(m.n, -speed);
 	}
 }
