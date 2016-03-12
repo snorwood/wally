@@ -37,6 +37,7 @@ const float GRAVITY_THRESHOLD = 9.00;
 /* Define Button Constants */
 const int BUTTON = 40;		// Button input pin
 const int BUTTON_REF = 36;	// Button high reference pin
+const int DEBOUNCE = 200;	// Button debounce delay
 
 /* Define IR Constants */
 const int IR = 31;
@@ -46,9 +47,9 @@ Struct: XYZ
 Description: Stores three dimensional float data
 */
 struct XYZ {
-	float x;
-	float y;
-	float z;
+	float x = 0;
+	float y = 0;
+	float z = 0;
 };
 
 /*

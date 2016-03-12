@@ -65,10 +65,15 @@ Description:	Run in your loop to give robot horizontal control
 void WallyControl::horizontalControl(float time_us, float x_r) {
 	float x = wally->readUltrasonic(1);
 	float u = hp * (x_r + x);
+	
 	if (u > MOTOR_LIMIT) {
 		u = MOTOR_LIMIT;
 	}
-	
+	// Serial.print(x_r);
+	// Serial.print(", ");
+	// Serial.print(x);
+	// Serial.print(", ");
+	// Serial.println(u);
 	wally->setMotors(u, u);
 	t1 = time_us;
 }
