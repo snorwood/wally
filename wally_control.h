@@ -50,6 +50,8 @@ private:
 	float err1 = 0;			// Theta error previous
 	float err2 = 0;			// Theta error new
 	float derr_dt = 0;		// delta error / dt
+
+	/* Rolling Medians */
 };
 
 #endif

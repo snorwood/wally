@@ -5,8 +5,6 @@
 #ifndef rolling_median_h
 #define rolling_median_h
 
-const int NULL = 0;	// Define null so things make sense
-
 /*
 Class: RollingMedian
 Description: 	A median filter for a live stream of data
@@ -18,6 +16,7 @@ template <class T>
 class RollingMedian {
 public:
 	RollingMedian(int max_size);	// Constructor
+	~RollingMedian();				// Destructor
 
 	/* Interface */
 	void insertSample(T item);		

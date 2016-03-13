@@ -13,7 +13,7 @@ using namespace std;
 
 /*
 Function: 		RollingMedian
-Description: 	Constructor, initializes median tracking
+Description: 	Constructor initializes median tracking
 Parameters:
 	max_size:	Max number of samples to store median for
 */
@@ -34,6 +34,29 @@ RollingMedian<T>::RollingMedian(int max_size) {
 	inputTail = new inputItem();
 	inputHead->next = inputTail;
 	inputTail->prev = inputHead;
+}
+
+/*
+Function: 		~RollingMedian
+Description: 	Destructor frees up all space used by median filter
+*/
+template <class T>
+RollingMedian<T>::~RollingMedian() {
+	/* Delete Output Sorted List */
+	sortItem* sortTrack = sortHead;
+	while (sortTrack->next != sortTail) {
+		sortTrack = sortTrack->next;
+		delete sortTrack->prev;
+	}
+	delete sortTail;
+
+	/* Delete Output Input List */
+	inputItem* inputTrack = inputHead;
+	while (inputTrack->next != inputTail) {
+		inputTrack = inputTrack->next;
+		delete inputTrack->prev;
+	}
+	delete inputTail;
 }
 
 /*
@@ -156,19 +179,22 @@ void RollingMedian<T>::output() {
 }	
 
 /* Test demo */
-// int main() {
-// 	RollingMedian<int> a = RollingMedian<int>(5);
-// 	a.output();
+int main() {
+	RollingMedian<int>* a = new RollingMedian<int>(5);
+	a->output();
 
-// 	a.insertSample(5);
-// 	a.insertSample(10);
-// 	a.insertSample(11);
-// 	a.insertSample(4);
-// 	a.insertSample(5);
-// 	a.output();
+	a->insertSample(5);
+	a->insertSample(10);
+	a->insertSample(11);
+	a->insertSample(4);
+	a->insertSample(5);
+	a->output();
 
-// 	a.insertSample(8);
-// 	a.insertSample(16);
-// 	a.output();
-// 	return 0;
-// }
+	a->insertSample(8);
+	a->insertSample(16);
+	a->output();
+
+	delete a;
+
+	return 0;
+}
