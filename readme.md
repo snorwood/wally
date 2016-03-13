@@ -12,10 +12,13 @@ A library created by Team Group 2 for controlling our wall climbing robot
 2. Sketch->Include Library->Contributed Libraries->wally
 3. Sketch->Include Library->Manage Libraries->Adafruit MMA8451 Library->Install
 4. Sketch->Include Library->Manage Libraries->Adafruit Unified Sensor->Install
+5. Download NewPing from https://bitbucket.org/teckel12/arduino-new-ping/downloads
+6. Save the library under Sketchbook->libraries->NewPing
 5. Sketch->Include Library->Manage Libraries->New Ping->Install
 
 ##Wally Library Functionality
 * Read accelerometer data
 * Read ultrasonic data
 * Drive motors
+* Rolling median filter
 * **Example:** Available at wally_tests
