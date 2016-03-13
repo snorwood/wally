@@ -7,6 +7,7 @@
 #define wally_control_h
 
 #include "wally.h"
+#include "rolling_median.h"
 
 const float MOTOR_LIMIT = 100;
 const float INPUT_LIMIT = 50;
@@ -19,15 +20,23 @@ Description: Provides high level control loops and functions for Wally
 */
 class WallyControl {
 public:
-	/* Contstructor */
+	/* Constructor */
 	WallyControl(Wally* wally);
 
-	/* Vertical Control */
+	/* Loop Update */
 	void begin();
-	void verticalControl(float time_us, float speed, float theta_r);
+	void update();
+	
+	/* Accessor Functions */
+	XYZ readAccelerometer();
+	int readIR();
+	float readUltrasonic(int address);
+
+	/* Vertical Control */
+	void verticalControl(float speed, float theta_r);
 
 	/* Horizontal Control */
-	void horizontalControl(float time_us, float x_r);
+	void horizontalControl(float x_r);
 
 private:
 	/* Robot */
@@ -40,7 +49,8 @@ private:
 
 	/* Time */
 	int t1 = 0;		// Time previous
-	
+	int t2 = 0;
+
 	/* Motor Inputs */
 	float ul;	// Right motor input
 	float ur;	// Left motor input
@@ -52,6 +62,12 @@ private:
 	float derr_dt = 0;		// delta error / dt
 
 	/* Rolling Medians */
+	RollingMedian<float> rm_acc_x;
+	RollingMedian<float> rm_acc_y;
+	RollingMedian<float> rm_acc_z;
+	RollingMedian<float> rm_us_0;
+	RollingMedian<float> rm_us_1;
+	RollingMedian<int>	 rm_ir;
 };
 
 #endif
