@@ -13,11 +13,20 @@ const float INPUT_LIMIT = 50;
 
 float defaultThetaR(float t);
 
+/*
+Class: WallyControl
+Description: Provides high level control loops and functions for Wally
+*/
 class WallyControl {
 public:
+	/* Contstructor */
 	WallyControl(Wally* wally);
+
+	/* Vertical Control */
 	void begin();
 	void verticalControl(float time_us, float speed, float theta_r);
+
+	/* Horizontal Control */
 	void horizontalControl(float time_us, float x_r);
 
 private:
