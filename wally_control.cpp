@@ -100,24 +100,22 @@ void WallyControl::verticalControl(float speed_r, float theta_r) {
 	/* Calculate Motor Inputs */
 	/* Ensure input differential is within limits */
 	float u = kp * err2 + kd * derr_dt;
-	if (abs(u) > INPUT_LIMIT) {
-		if (u > 0) {
-			u = INPUT_LIMIT;
-		} else {
-			u = -INPUT_LIMIT;
-		}
+	if (u > INPUT_LIMIT) {
+		u = INPUT_LIMIT;
+	} else if (u < -INPUT_LIMIT) {
+		u = -INPUT_LIMIT;
 	}
 
-	/* Ensure output is within limits */
-	if (speed_r + u / 2.0 > MOTOR_LIMIT) {
-		speed_r = MOTOR_LIMIT - u / 2.0;
-	} else if (speed_r - u / 2.0 < -MOTOR_LIMIT) {
-		speed_r = -MOTOR_LIMIT + u / 2.0;
+	u = u / 2.0;
+
+	if (speed_r + abs(u) > MOTOR_LIMIT) {
+		speed_r = MOTOR_LIMIT - abs(u);
+	} else if (speed_r - abs(u) < -MOTOR_LIMIT) {
+		speed_r = -MOTOR_LIMIT + abs(u);
 	}
 
-	/* Send output to motors */
-	ur = speed_r + u / 2.0;
-	ul = speed_r - u / 2.0;
+	ur = speed_r + u;
+	ul = speed_r - u;
 	wally->setMotors(ul, ur);
 
 	/* Update Stored Values */
@@ -128,12 +126,12 @@ void WallyControl::verticalControl(float speed_r, float theta_r) {
 Function:		horizontalControl
 Description:	Run in your loop to give robot horizontal control
 */
-void WallyControl::horizontalControl(float x_r) {
-	/* Calculate Output Based On Ultrasonic */
-	float x = readUltrasonic(0);
-	float u = hp * (x_r + x);
 
+void WallyControl::horizontalControl(float time_us, float x_r) {
 	/* Ensure output is within limits */
+	float x = wally->readUltrasonic(1);
+	float u = hp * (x_r + x);
+	
 	if (u > MOTOR_LIMIT) {
 		u = MOTOR_LIMIT;
 	}

@@ -11,6 +11,7 @@
 
 const float MOTOR_LIMIT = 100;
 const float INPUT_LIMIT = 50;
+const int MOTOR_CORRECT = 3;
 
 float defaultThetaR(float t);
 
@@ -43,9 +44,9 @@ private:
 	Wally* wally;	// Robot instance
 
 	/* Loop Parameters */
-	float kp = 1;
-	float kd = 100;
-	float hp = 2;
+	float kp = 500;
+	float kd = 1;
+	float hp = 1.8;
 
 	/* Time */
 	int t1 = 0;		// Time previous
