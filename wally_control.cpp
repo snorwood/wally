@@ -14,6 +14,14 @@ WallyControl::WallyControl(Wally* wally) {
 	this->wally = wally;
 }
 
+WallyControl::WallyControl(Wally* wally, float kp, float kd, float hp, int sampleSize) {
+	this->wally = wally;
+	this->kp = kp;
+	this->kd = kd;
+	this->hp = hp;
+	this->sampleSize = sampleSize;
+}
+
 /*
 Function:		begin
 Description:	Initial conditions and parameters of control loop
@@ -24,12 +32,12 @@ void WallyControl::begin() {
 	err1 = 0;
 
 	/* Initialize Rolling Medians  */
-	rm_acc_x = RollingMedian<float>(25);
-	rm_acc_y = RollingMedian<float>(25);
-	rm_acc_z = RollingMedian<float>(25);
-	rm_us_0 = RollingMedian<float>(25);
-	rm_us_1 = RollingMedian<float>(25);
-	rm_ir = RollingMedian<int>(25);
+	rm_acc_x = RollingMedian<float>(sampleSize);
+	rm_acc_y = RollingMedian<float>(sampleSize);
+	rm_acc_z = RollingMedian<float>(sampleSize);
+	rm_us_0 = RollingMedian<float>(sampleSize);
+	rm_us_1 = RollingMedian<float>(sampleSize);
+	rm_ir = RollingMedian<int>(sampleSize);
 }
 
 void WallyControl::update() {

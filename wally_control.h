@@ -50,7 +50,8 @@ private:
 
 	/* Time */
 	int t1 = 0;		// Time previous
-	int t2 = 0;
+	int t2 = 0;		// Time current
+	int sampleSize = 10;
 
 	/* Motor Inputs */
 	float ul;	// Right motor input
