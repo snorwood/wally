@@ -23,6 +23,7 @@ class WallyControl {
 public:
 	/* Constructor */
 	WallyControl(Wally* wally);
+	WallyControl(Wally* wally, float vp, float vd, float hp, int sampleSize);
 
 	/* Loop Update */
 	void begin();
@@ -44,8 +45,8 @@ private:
 	Wally* wally;	// Robot instance
 
 	/* Loop Parameters */
-	float kp = 500;
-	float kd = 1;
+	float vp = 500;
+	float vd = 1;
 	float hp = 1.8;
 
 	/* Time */

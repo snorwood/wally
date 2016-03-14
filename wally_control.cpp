@@ -14,10 +14,19 @@ WallyControl::WallyControl(Wally* wally) {
 	this->wally = wally;
 }
 
-WallyControl::WallyControl(Wally* wally, float kp, float kd, float hp, int sampleSize) {
+/*
+Function:		WallyControl
+Description:	Initializes control loop with parameters
+Parameters:
+	vp:			Vertical proportional gain
+	vd:			Vertical derivative gain
+	hp:			Horizontal proportional gain
+	sampleSize:	Size of median filter samples
+*/
+WallyControl::WallyControl(Wally* wally, float vp, float vd, float hp, int sampleSize) {
 	this->wally = wally;
-	this->kp = kp;
-	this->kd = kd;
+	this->vp = vp;
+	this->vd = vd;
 	this->hp = hp;
 	this->sampleSize = sampleSize;
 }
@@ -112,7 +121,7 @@ void WallyControl::verticalControl(float speed_r, float theta_r) {
 
 	/* Calculate Motor Inputs */
 	/* Ensure input differential is within limits */
-	float u = kp * err2 + kd * derr_dt;
+	float u = vp * err2 + vd * derr_dt;
 	if (abs(u) > INPUT_LIMIT) {
 		if (u > 0) {
 			u = INPUT_LIMIT;
