@@ -100,14 +100,16 @@ void WallyControl::verticalControl(float speed_r, float theta_r) {
 	/* Calculate Motor Inputs */
 	/* Ensure input differential is within limits */
 	float u = kp * err2 + kd * derr_dt;
-	if (u > INPUT_LIMIT) {
-		u = INPUT_LIMIT;
-	} else if (u < -INPUT_LIMIT) {
-		u = -INPUT_LIMIT;
+	if (abs(u) > INPUT_LIMIT) {
+		if (u > 0) {
+			u = INPUT_LIMIT;
+		} else {
+			u = -INPUT_LIMIT;
+		}
 	}
 
+	/* Ensure output is within limits */
 	u = u / 2.0;
-
 	if (speed_r + abs(u) > MOTOR_LIMIT) {
 		speed_r = MOTOR_LIMIT - abs(u);
 	} else if (speed_r - abs(u) < -MOTOR_LIMIT) {
