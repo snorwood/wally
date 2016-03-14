@@ -51,6 +51,7 @@ Description: 	Calibrates the accelerometer offset based on current reading
 */
 void Wally::calibrateAccelerometer(){
 	accelerometerOffset = readAccelerometer();
+	accelerometerOffset.z = accelerometerOffset.z - GRAVITY;
 }
 
 /*
@@ -64,7 +65,7 @@ XYZ Wally::readAccelerometer() {
 	mma->read();
 	accData.x = convertAccelerometer(mma->x) - accelerometerOffset.x;
 	accData.y = convertAccelerometer(mma->y) - accelerometerOffset.y;
-	accData.z = convertAccelerometer(mma->z); 
+	accData.z = convertAccelerometer(mma->z) - accelerometerOffset.z; 
 
 	return accData;
 }
@@ -94,7 +95,7 @@ Parameters:
 Returns:		float theta
 */
 float Wally::getTheta(XYZ acc) {
-	return atan2(acc.x, -acc.y);
+	return asin(acc.x / -GRAVITY);
 }
 
 /********** ULTRASONIC ***********/
