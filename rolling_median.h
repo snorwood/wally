@@ -5,6 +5,11 @@
 #ifndef rolling_median_h
 #define rolling_median_h
 
+/* Define NULL */
+#ifndef NULL
+#define NULL 0
+#endif
+
 /*
 Class: RollingMedian
 Description: 	A median filter for a live stream of data
@@ -12,7 +17,6 @@ Description: 	A median filter for a live stream of data
 				Odd number of samples is recommended
 Template:	T type of data to get median for
 */
-const int null = 0;
 template <class T>
 class RollingMedian {
 	friend class RollingMedianTest;
@@ -26,9 +30,6 @@ public:
 	void insertSample(T item);		
 	T getMedian();
 
-	/* Testing Functions */
-	// void output();
-
 private:
 	/* Sorted list data structure */
 	struct sortItem {
@@ -37,7 +38,7 @@ private:
 		sortItem* prev;
 
 		/* Constructor */
-		sortItem():next(null),prev(null){}
+		sortItem():next(NULL),prev(NULL){}
 	};
 
 	/* Input Ordered List Data Structure */
@@ -47,7 +48,7 @@ private:
 		sortItem* sorted;
 
 		/* Constructor */
-		inputItem():next(null),prev(null),sorted(null){}
+		inputItem():next(NULL),prev(NULL),sorted(NULL){}
 	};
 	
 	/* Sample Set Properties */
