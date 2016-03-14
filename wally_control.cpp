@@ -27,8 +27,9 @@ void WallyControl::begin() {
 	rm_acc_x = RollingMedian<float>(25);
 	rm_acc_y = RollingMedian<float>(25);
 	rm_acc_z = RollingMedian<float>(25);
-	rm_us_0 = RollingMedian<float>(25);
-	rm_us_1 = RollingMedian<float>(25);
+	rm_us_f = RollingMedian<float>(25);
+	rm_us_r = RollingMedian<float>(25);
+	rm_us_l = RollingMedian<float>(25);
 	rm_ir = RollingMedian<int>(25);
 }
 
@@ -43,8 +44,9 @@ void WallyControl::update() {
 	rm_acc_y.insertSample(acc.y);
 	rm_acc_z.insertSample(acc.z);
 
-	rm_us_0.insertSample(wally->readUltrasonic(0));
-	rm_us_1.insertSample(wally->readUltrasonic(1));
+	rm_us_f.insertSample(wally->readUltrasonic(0));
+	rm_us_r.insertSample(wally->readUltrasonic(1));
+	rm_us_l.insertSample(wally->readUltrasonic(2));
 
 	rm_ir.insertSample(wally->readIR());
 }
@@ -72,10 +74,13 @@ Parameters:
 Returns:		Float of selected ultrasonic distance measurement	
 */
 float WallyControl::readUltrasonic(int address) {
-	if (address == 0)
-		return rm_us_0.getMedian();
+	if (address == 1)
+		return rm_us_r.getMedian();
+	
+	if (address == 2);
+		return rm_us_l.getMedian();
 
-	return rm_us_1.getMedian();
+	return rm_us_f.getMedian();
 }
 
 /*
@@ -129,9 +134,9 @@ Function:		horizontalControl
 Description:	Run in your loop to give robot horizontal control
 */
 
-void WallyControl::horizontalControl(float time_us, float x_r) {
+void WallyControl::horizontalControl(float x_r) {
 	/* Ensure output is within limits */
-	float x = wally->readUltrasonic(1);
+	float x = readUltrasonic(0);
 	float u = hp * (x_r + x);
 	
 	if (u > MOTOR_LIMIT) {

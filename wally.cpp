@@ -23,6 +23,7 @@ Wally::Wally() {
 	/* Ultrasonic */
 	us_f = new NewPing(US_F_T, US_F_E, US_MAX_DISTANCE);
 	us_r = new NewPing(US_R_T, US_R_E, US_MAX_DISTANCE);
+	us_l = new NewPing(US_L_T, US_L_E, US_MAX_DISTANCE);
 
 	/* Button */
 	pinMode(BUTTON, INPUT);
@@ -110,13 +111,23 @@ Returns:		Float of selected ultrasonic distance measurement
 float Wally::readUltrasonic(int address) {
 	float us = 0;
 
-	if (address == 0)
-		us = us_f->ping() / float(US_CONVERT);
+	/* Read addressed sensor */
+	if (address == 1)
+		us = us_r->ping();
+	else if (address == 2)
+		us = us_l->ping();
 	else
-		us = us_r->ping() / float(US_CONVERT);
+		us = us_f->ping();
 
+	/* Convert sensor reading to cm */
+	us = us / float(US_CONVERT);
+
+	/* Handle out of range sensor readings */
+	if (us == 0)
+		return US_MAX_DISTANCE + 1;
+	
 	if (us < US_MIN_DISTANCE)
-		return US_MIN_DISTANCE;
+		return 0;
 	
 	return us;
 }

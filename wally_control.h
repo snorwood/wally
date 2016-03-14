@@ -66,8 +66,9 @@ private:
 	RollingMedian<float> rm_acc_x;
 	RollingMedian<float> rm_acc_y;
 	RollingMedian<float> rm_acc_z;
-	RollingMedian<float> rm_us_0;
-	RollingMedian<float> rm_us_1;
+	RollingMedian<float> rm_us_f;
+	RollingMedian<float> rm_us_r;
+	RollingMedian<float> rm_us_l;
 	RollingMedian<int>	 rm_ir;
 };
 

@@ -23,8 +23,10 @@ const int RR_N = 9;		// Right Rear Low
 /* Define Ultrasonic Constants */
 const int US_F_E = 35;	// Front Echo
 const int US_F_T = 33;	// Front Trigger
-const int US_R_E = 32;	// Rear Echo
-const int US_R_T = 34; 	// Rear Trigger
+const int US_R_E = 46;	// Rear Echo
+const int US_R_T = 48; 	// Rear Trigger
+const int US_L_E = 32;	// Rear Echo
+const int US_L_T = 34; 	// Rear Trigger
 
 const float US_MAX_DISTANCE = 200;	// Maximum detection range
 const float US_MIN_DISTANCE = 5;
@@ -107,6 +109,7 @@ private:
 	/* Ultrasonic */
 	NewPing* us_f;
 	NewPing* us_r;
+	NewPing* us_l;
 
 	/* Motors */
 	static void setMotor(Motor m, float speed);
