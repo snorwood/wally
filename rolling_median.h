@@ -5,7 +5,6 @@
 #ifndef rolling_median_h
 #define rolling_median_h
 
-const int DEFAULT_SS = 10;
 const int REMOVE = 0x01, SWAP = 0x02;
 
 /*
@@ -20,7 +19,7 @@ class RollingMedian {
 	friend class RollingMedianTest;
 
 public:
-	RollingMedian(int max_size=DEFAULT_SS);	// Constructor
+	RollingMedian(int max_size=10);	// Constructor
 	~RollingMedian();				// Destructor
 
 	/* Interface */
@@ -105,9 +104,8 @@ void RollingMedian<T>::insertSample(T value) {
 	}
 
 	/* Insert new value into sorted list */
-	int replace = value; // Value to insert into list at any time
+	T replace = value; // Value to insert into list at any time
 	for(int i=0; i < size; i++) {
-
 		/* Decide when to start swapping values */
 		if ((state & REMOVE) && pop == sortList[i]) {
 			state |= SWAP;
@@ -121,7 +119,7 @@ void RollingMedian<T>::insertSample(T value) {
 
 		/* Insert current replace value */
 		if ((i == (size - 1) || replace < sortList[i])) {
-			int temp = sortList[i];
+			T temp = sortList[i];
 			sortList[i] = replace;
 			replace = temp;
 		}

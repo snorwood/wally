@@ -58,6 +58,25 @@ int main() {
 	a->insertSample(1);
 	a->insertSample(555);
 	a->insertSample(421);
+	a->insertSample(17);
+	a->insertSample(17);
+	a->insertSample(17);
+	a->insertSample(17);
+	a->insertSample(17);
+	a->insertSample(17);
+	a->insertSample(17);
+	a->insertSample(17);
+	a->insertSample(17);
+	a->insertSample(17);
+	a->insertSample(17);
+	test.output(a);
+	a->insertSample(201);
+	a->insertSample(201);
+	a->insertSample(201);
+	a->insertSample(201);
+	a->insertSample(201);
+	a->insertSample(201);
+	a->insertSample(201);
 	test.output(a);
 
 	return 0;
