@@ -4,7 +4,7 @@
 */
 #include <iostream>
 #include "rolling_median_test.h"
-#include "rolling_median.h"
+#include "../rolling_median.h"
 
 using namespace std;
 
@@ -56,6 +56,14 @@ int main() {
 
 	a->insertSample(8);
 	a->insertSample(16);
+	test.output(a);
+
+	a->insertSample(1);
+	a->insertSample(3);
+	a->insertSample(34);
+	a->insertSample(1);
+	a->insertSample(555);
+	a->insertSample(421);
 	test.output(a);
 
 	return 0;
