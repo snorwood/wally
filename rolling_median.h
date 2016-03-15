@@ -5,6 +5,9 @@
 #ifndef rolling_median_h
 #define rolling_median_h
 
+const int DEFAULT_SS = 10;
+const int REMOVE = 0x01, SWAP = 0x02;
+
 /*
 Class: RollingMedian
 Description: 	A median filter for a live stream of data
@@ -17,8 +20,7 @@ class RollingMedian {
 	friend class RollingMedianTest;
 
 public:
-	RollingMedian();
-	RollingMedian(int max_size);	// Constructor
+	RollingMedian(int max_size=DEFAULT_SS);	// Constructor
 	~RollingMedian();				// Destructor
 
 	/* Interface */
@@ -32,8 +34,8 @@ private:
 
 	/* Input Ordered Queue */
 	T* inputQueue;
-	int inputHead = 0;
-	int inputTail = 0;
+	int inputHead;
+	int inputTail;
 
 	/* Sorted List */
 	T* sortList;
@@ -42,14 +44,6 @@ private:
 /**************************************
 				PUBLIC
 **************************************/
-
-/*
-Function: 		RollingMedian
-Description: 	Default constructor placeholder
-*/
-template <class T>
-RollingMedian<T>::RollingMedian() : RollingMedian(10) {
-}
 
 /*
 Function: 		RollingMedian
@@ -94,28 +88,43 @@ void RollingMedian<T>::insertSample(T value) {
 	if (max_size <= 0)
 		return;
 
-	/* Cycle Input Queue */
-	T pop = inputQueue[inputHead];
-	inputQueue[inputTail] = value;
-	inputTail = (inputTail + 1) % max_size;
-	size += 1;
+	/* State of sorting algorithm */
+	int state = 0x00;
+
+	/* Cycle input queue */
+	T pop = inputQueue[inputHead];			// Store potential pop value
+	inputQueue[inputTail] = value;			// Push new value
+	inputTail = (inputTail + 1) % max_size;	// Increment TAIL	
+	size += 1;								// Increment size
+
+	/* Handle adding a value when queue is full */
 	if (size > max_size) {
-		inputHead = (inputHead + 1) % max_size;
+		inputHead = (inputHead + 1) % max_size;	// Increment HEAD
+		state |= REMOVE;						// Set state correctly
 		size -= 1;
 	}
-	
-	int inserted = size == max_size;
-	int removed = inserted;
-	int replace = value;
-	int i = 0;
 
-	while (!inserted && !removed) {
-		if (i == size || replace < sortList[i]) {
+	/* Insert new value into sorted list */
+	int replace = value; // Value to insert into list at any time
+	for(int i=0; i < size; i++) {
+
+		/* Decide when to start swapping values */
+		if ((state & REMOVE) && pop == sortList[i]) {
+			state |= SWAP;
+			state = state & (~REMOVE);
+		}
+
+		/* Swap when value is popped */
+		if (state & SWAP) {
+			sortList[i] = sortList[i+1];
+		}
+
+		/* Insert current replace value */
+		if ((i == (size - 1) || replace < sortList[i])) {
 			int temp = sortList[i];
 			sortList[i] = replace;
 			replace = temp;
 		}
-		i++;
 	}
 }
 
@@ -130,6 +139,14 @@ T RollingMedian<T>::getMedian() {
 	if (size == 0)
 		return 0;
 
-	return 1;
+	/* Find middle of list */
+	int i = (size - 1) / 2;
+
+	/* Handle odd size case */
+	if (size % 2)
+		return sortList[i];
+	
+	/* Handle even size case */
+	return (sortList[i] + sortList[i+1]) / 2.0;
 }
 #endif

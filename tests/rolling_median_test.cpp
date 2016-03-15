@@ -16,7 +16,7 @@ Description: 	Outputs current sample set information to cout
 */
 void RollingMedianTest::output(RollingMedian<float>* rm) {
 	/* Output Size */
-	cout << "SIZE: " << rm->size << "\n";
+	cout << "\n" << "SIZE: " << rm->size << "\n";
 
 	/* Output Input List */
 	cout << "INPUT:";
@@ -37,28 +37,28 @@ void RollingMedianTest::output(RollingMedian<float>* rm) {
 /* Test demo */
 int main() {
 	RollingMedianTest test;
-	RollingMedian<float>* a = new RollingMedian<float>(5);
+	RollingMedian<float>* a = new RollingMedian<float>(6);
 
 	test.output(a);
 
+	a->insertSample(3);
 	a->insertSample(5);
+	a->insertSample(2);
+	a->insertSample(8);
 	a->insertSample(10);
-	a->insertSample(11);
-	a->insertSample(4);
-	a->insertSample(5);
+	a->insertSample(0);
 	test.output(a);
 
-	// a->insertSample(8);
-	// a->insertSample(16);
-	// test.output(a);
+	a->insertSample(7);
+	test.output(a);
 
-	// a->insertSample(1);
-	// a->insertSample(3);
-	// a->insertSample(34);
-	// a->insertSample(1);
-	// a->insertSample(555);
-	// a->insertSample(421);
-	// test.output(a);
+	a->insertSample(1);
+	a->insertSample(3);
+	a->insertSample(34);
+	a->insertSample(1);
+	a->insertSample(555);
+	a->insertSample(421);
+	test.output(a);
 
 	return 0;
 }
