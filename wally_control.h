@@ -2,7 +2,6 @@
   wally_control.h - Control loop library for wally the robot.
   Created by Team Wall-R-Us, March 5, 2016.
 */
-
 #ifndef wally_control_h
 #define wally_control_h
 
@@ -13,6 +12,7 @@ const float MOTOR_LIMIT = 100;
 const float INPUT_LIMIT = 50;
 const int MOTOR_CORRECT = 3;
 
+
 float defaultThetaR(float t);
 
 /*
@@ -22,8 +22,7 @@ Description: Provides high level control loops and functions for Wally
 class WallyControl {
 public:
 	/* Constructor */
-	WallyControl(Wally* wally);
-	WallyControl(Wally* wally, float vp, float vd, float hp, int sampleSize);
+	WallyControl(Wally* wally, float vp=500, float vd=1, float hp=1.8, int sampleSize=3);
 
 	/* Loop Update */
 	void begin();
