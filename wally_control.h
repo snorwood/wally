@@ -9,7 +9,7 @@
 #include "rolling_median.h"
 
 const float MOTOR_LIMIT = 100;
-const float INPUT_LIMIT = 50;
+const float INPUT_LIMIT = 60;
 const int MOTOR_CORRECT = 3;
 
 
@@ -64,13 +64,13 @@ private:
 	float derr_dt = 0;		// delta error / dt
 
 	/* Rolling Medians */
-	RollingMedian<float> rm_acc_x;
-	RollingMedian<float> rm_acc_y;
-	RollingMedian<float> rm_acc_z;
-	RollingMedian<float> rm_us_f;
-	RollingMedian<float> rm_us_r;
-	RollingMedian<float> rm_us_l;
-	RollingMedian<int>	 rm_ir;
+	RollingMedian<float>* rm_acc_x;
+	RollingMedian<float>* rm_acc_y;
+	RollingMedian<float>* rm_acc_z;
+	RollingMedian<float>* rm_us_f;
+	RollingMedian<float>* rm_us_r;
+	RollingMedian<float>* rm_us_l;
+	RollingMedian<int>*	 rm_ir;
 };
 
 #endif

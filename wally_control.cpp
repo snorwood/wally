@@ -29,19 +29,20 @@ Description:	Initial conditions and parameters of control loop
 */
 void WallyControl::begin() {
 	/* Initialize Derivative Terms */
-	t1 = micros();
 	err1 = 0;
 
 	/* Initialize Rolling Medians  */
-	rm_acc_x = RollingMedian<float>(sampleSize);
-	rm_acc_y = RollingMedian<float>(sampleSize);
-	rm_acc_z = RollingMedian<float>(sampleSize);
+	rm_acc_x = new RollingMedian<float>(sampleSize);
+	rm_acc_y = new RollingMedian<float>(sampleSize);
+	rm_acc_z = new RollingMedian<float>(sampleSize);
 
-	rm_us_f = RollingMedian<float>(sampleSize);
-	rm_us_r = RollingMedian<float>(sampleSize);
-	rm_us_l = RollingMedian<float>(sampleSize);
+	rm_us_f = new RollingMedian<float>(sampleSize);
+	rm_us_r = new RollingMedian<float>(sampleSize);
+	rm_us_l = new RollingMedian<float>(sampleSize);
 
-	rm_ir = RollingMedian<int>(sampleSize);
+	rm_ir = new RollingMedian<int>(sampleSize);
+
+	update();
 }
 
 void WallyControl::update() {
@@ -51,15 +52,15 @@ void WallyControl::update() {
 
 	/* Update Rolling Medians */
 	XYZ acc = wally->readAccelerometer();
-	rm_acc_x.insertSample(acc.x);
-	rm_acc_y.insertSample(acc.y);
-	rm_acc_z.insertSample(acc.z);
-	
-	rm_us_f.insertSample(wally->readUltrasonic(0));
-	rm_us_r.insertSample(wally->readUltrasonic(1));
-	rm_us_l.insertSample(wally->readUltrasonic(2));
+	rm_acc_x->insertSample(acc.x);
+	rm_acc_y->insertSample(acc.y);
+	rm_acc_z->insertSample(acc.z);
 
-	rm_ir.insertSample(wally->readIR());
+	rm_us_f->insertSample(wally->readUltrasonic(0));
+	rm_us_r->insertSample(wally->readUltrasonic(1));
+	rm_us_l->insertSample(wally->readUltrasonic(2));
+
+	rm_ir->insertSample(wally->readIR());
 }
 
 /*
@@ -70,9 +71,9 @@ Returns:		XYZ struct of current accelerometer data
 XYZ WallyControl::readAccelerometer() {
 	XYZ accData;
 
-	accData.x = rm_acc_x.getMedian();
-	accData.y = rm_acc_y.getMedian();
-	accData.z = rm_acc_z.getMedian();
+	accData.x = rm_acc_x->getMedian();
+	accData.y = rm_acc_y->getMedian();
+	accData.z = rm_acc_z->getMedian();
 
 	return accData;
 }
@@ -86,13 +87,13 @@ Returns:		Float of selected ultrasonic distance measurement
 */
 float WallyControl::readUltrasonic(int address) {
 	if (address == 1) {
-		return rm_us_r.getMedian();
+		return rm_us_r->getMedian();
 	}
 	
 	if (address == 2)
-		return rm_us_l.getMedian();
+		return rm_us_l->getMedian();
 
-	return rm_us_f.getMedian();
+	return rm_us_f->getMedian();
 }
 
 /*
@@ -101,7 +102,7 @@ Description:	Reads the median IR sensor
 Returns:		int status of IR sensor on=1, off=0 
 */
 int WallyControl::readIR() {
-	return rm_ir.getMedian();
+	return rm_ir->getMedian();
 }
 
 /*
@@ -110,7 +111,8 @@ Description:	Run in your loop to give robot vertical control
 */
 void WallyControl::verticalControl(float speed_r, float theta_r) {
 	/* Collect Loop Variables */
-	theta = wally->getTheta(readAccelerometer());
+	XYZ acc = readAccelerometer();
+	theta = wally->getTheta(acc);
 	err2 = theta_r - theta;
 	derr_dt = (err2-err1)/(t2-t1);
 
@@ -136,6 +138,10 @@ void WallyControl::verticalControl(float speed_r, float theta_r) {
 	ur = speed_r + u;
 	ul = speed_r - u;
 	wally->setMotors(ul, ur);
+
+	// Serial.print(ur);
+	// Serial.print("   ");
+	// Serial.println(ul);
 
 	/* Update Stored Values */
 	err1 = err2;
