@@ -31,37 +31,17 @@ public:
 	T getMedian();
 
 private:
-	/* Sorted list data structure */
-	struct sortItem {
-		T value;
-		sortItem* next;
-		sortItem* prev;
-
-		/* Constructor */
-		sortItem():next(NULL),prev(NULL){}
-	};
-
-	/* Input Ordered List Data Structure */
-	struct inputItem {
-		inputItem* next;
-		inputItem* prev;
-		sortItem* sorted;
-
-		/* Constructor */
-		inputItem():next(NULL),prev(NULL),sorted(NULL){}
-	};
-	
 	/* Sample Set Properties */
 	int size;
 	int max_size;
 
-	/* Input Ordered List Nodes */
-	inputItem* inputHead;
-	inputItem* inputTail;
+	/* Input Ordered Queue */
+	inputItem* inputQueue;
+	inputHead = 0;
+	inputTail = 0;
 
-	/* Sorted List Nodes */
-	sortItem* sortHead;
-	sortItem* sortTail;
+	/* Sorted List */
+	sortItem* sortList;
 };
 
 /**************************************
@@ -73,7 +53,7 @@ Function: 		RollingMedian
 Description: 	Default constructor placeholder
 */
 template <class T>
-RollingMedian<T>::RollingMedian() {
+RollingMedian<T>::RollingMedian() : RollingMedian(10) {
 }
 
 /*
@@ -89,10 +69,7 @@ RollingMedian<T>::RollingMedian(int max_size) {
 	this->max_size = max_size;
 
 	/* Initialize Sorted List */
-	sortHead = new sortItem();
-	sortTail = new sortItem();
-	sortHead->next = sortTail;
-	sortTail->prev = sortTail;
+	sortList = new[max_size] T;
 
 	/* Initialize Input List */
 	inputHead = new inputItem();
