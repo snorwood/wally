@@ -44,9 +44,11 @@ void WallyControl::begin() {
 	rm_acc_x = RollingMedian<float>(sampleSize);
 	rm_acc_y = RollingMedian<float>(sampleSize);
 	rm_acc_z = RollingMedian<float>(sampleSize);
+
 	rm_us_f = RollingMedian<float>(sampleSize);
 	rm_us_r = RollingMedian<float>(sampleSize);
 	rm_us_l = RollingMedian<float>(sampleSize);
+
 	rm_ir = RollingMedian<int>(sampleSize);
 }
 
@@ -87,14 +89,15 @@ XYZ WallyControl::readAccelerometer() {
 Function:		readUltrasonic
 Description:	Reads the median from an ultrasonic
 Parameters:
-	address:	Selects ultrasonic sensor -> 0=FRONT, 1=REAR
+	address:	Selects ultrasonic sensor -> 0=FRONT, 1=RIGHT, 2=LEFT
 Returns:		Float of selected ultrasonic distance measurement	
 */
 float WallyControl::readUltrasonic(int address) {
-	if (address == 1)
+	if (address == 1) {
 		return rm_us_r.getMedian();
+	}
 	
-	if (address == 2);
+	if (address == 2)
 		return rm_us_l.getMedian();
 
 	return rm_us_f.getMedian();
