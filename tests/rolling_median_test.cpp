@@ -18,22 +18,16 @@ void RollingMedianTest::output(RollingMedian<float>* rm) {
 	/* Output Size */
 	cout << "SIZE: " << rm->size << "\n";
 
-	/* Output Sorted List */
-	RollingMedian<float>::sortItem* sortTrack = rm->sortHead;
-	cout << "SORTED:";
-	while (sortTrack->next != rm->sortTail) {
-		sortTrack = sortTrack->next;
-		cout << " " << sortTrack->value;
-	}
+	/* Output Input List */
+	cout << "INPUT:";
+	for (int i = 0; i < rm->size; i++)
+		cout << " " << rm->inputQueue[i];
 	cout << "\n";
 
-	/* Output Input List */
-	RollingMedian<float>::inputItem* inputTrack = rm->inputHead;
-	cout << "INPUT:";
-	while (inputTrack->next != rm->inputTail) {
-		inputTrack = inputTrack->next;
-		cout << " " << inputTrack->sorted->value;
-	}
+	/* Output Sorted List */
+	cout << "SORTED:";
+	for (int i = 0; i < rm->size; i++)
+		cout << " " << rm->sortList[i];
 	cout << "\n";
 
 	/* Output Median */
@@ -54,17 +48,17 @@ int main() {
 	a->insertSample(5);
 	test.output(a);
 
-	a->insertSample(8);
-	a->insertSample(16);
-	test.output(a);
+	// a->insertSample(8);
+	// a->insertSample(16);
+	// test.output(a);
 
-	a->insertSample(1);
-	a->insertSample(3);
-	a->insertSample(34);
-	a->insertSample(1);
-	a->insertSample(555);
-	a->insertSample(421);
-	test.output(a);
+	// a->insertSample(1);
+	// a->insertSample(3);
+	// a->insertSample(34);
+	// a->insertSample(1);
+	// a->insertSample(555);
+	// a->insertSample(421);
+	// test.output(a);
 
 	return 0;
 }

@@ -5,11 +5,6 @@
 #ifndef rolling_median_h
 #define rolling_median_h
 
-/* Define NULL */
-#ifndef NULL
-#define NULL 0
-#endif
-
 /*
 Class: RollingMedian
 Description: 	A median filter for a live stream of data
@@ -36,12 +31,12 @@ private:
 	int max_size;
 
 	/* Input Ordered Queue */
-	inputItem* inputQueue;
-	inputHead = 0;
-	inputTail = 0;
+	T* inputQueue;
+	int inputHead = 0;
+	int inputTail = 0;
 
 	/* Sorted List */
-	sortItem* sortList;
+	T* sortList;
 };
 
 /**************************************
@@ -69,13 +64,12 @@ RollingMedian<T>::RollingMedian(int max_size) {
 	this->max_size = max_size;
 
 	/* Initialize Sorted List */
-	sortList = new[max_size] T;
+	sortList = new T[max_size];
 
-	/* Initialize Input List */
-	inputHead = new inputItem();
-	inputTail = new inputItem();
-	inputHead->next = inputTail;
-	inputTail->prev = inputHead;
+	/* Initialize Input Queue */
+	inputQueue = new T[max_size];
+	inputHead = 0;
+	inputTail = 0;
 }
 
 /*
@@ -84,21 +78,8 @@ Description: 	Destructor frees up all space used by median filter
 */
 template <class T>
 RollingMedian<T>::~RollingMedian() {
-	/* Delete Output Sorted List */
-	sortItem* sortTrack = sortHead;
-	while (sortTrack->next != sortTail) {
-		sortTrack = sortTrack->next;
-		delete sortTrack->prev;
-	}
-	delete sortTail;
-
-	/* Delete Output Input List */
-	inputItem* inputTrack = inputHead;
-	while (inputTrack->next != inputTail) {
-		inputTrack = inputTrack->next;
-		delete inputTrack->prev;
-	}
-	delete inputTail;
+	delete inputQueue;
+	delete sortList;
 }
 
 /*
@@ -113,57 +94,29 @@ void RollingMedian<T>::insertSample(T value) {
 	if (max_size <= 0)
 		return;
 
-	/* Initialize temporary tracking variables */
-	inputItem* inputTrack = inputHead;
-	sortItem* sortTrack = sortHead;
-
-	/* Initialize new sorted list item */
-	sortItem* newSort = new sortItem();
-	newSort->value = value;
-
-	/* Initialize new input list item */
-	inputItem* newInput = new inputItem();
-
-	/* Pop an item from the list if necessary */
-	if (size == max_size) {
-		/* Explicitly define nodes to pop */
-		inputItem* popInput = inputHead->next;
-		sortItem* popSort = popInput->sorted;
-
-		/* Pop the input list item */
-		inputHead->next = popInput->next;
-
-		/* Pop the sorted list item */
-		popSort->prev->next = popSort->next;
-		popSort->next->prev = popSort->prev;
-
-		/* Free memory of popped nodes */
-		delete popSort;
-		delete popInput;
-
-		/* Correct the current size */
+	/* Cycle Input Queue */
+	T pop = inputQueue[inputHead];
+	inputQueue[inputTail] = value;
+	inputTail = (inputTail + 1) % max_size;
+	size += 1;
+	if (size > max_size) {
+		inputHead = (inputHead + 1) % max_size;
 		size -= 1;
 	}
+	
+	int inserted = size == max_size;
+	int removed = inserted;
+	int replace = value;
+	int i = 0;
 
-	/* Locate where to add new value in sorted list */
-	while (sortTrack->next != sortTail && sortTrack->next->value < value)
-		sortTrack = sortTrack->next;
-
-	/* Insert the new value into sorted list */
-	newSort->next = sortTrack->next;
-	newSort->prev = sortTrack;
-	sortTrack->next = newSort;
-	newSort->next->prev = newSort;
-
-	/* Insert the new value into the input queue */
-	newInput->sorted = newSort;
-	newInput->prev = inputTail->prev;
-	newInput->next = inputTail;
-	newInput->prev->next = newInput;
-	inputTail->prev = newInput;
-
-	/* Correct current size */
-	size += 1;
+	while (!inserted && !removed) {
+		if (i == size || replace < sortList[i]) {
+			int temp = sortList[i];
+			sortList[i] = replace;
+			replace = temp;
+		}
+		i++;
+	}
 }
 
 /*
@@ -177,15 +130,6 @@ T RollingMedian<T>::getMedian() {
 	if (size == 0)
 		return 0;
 
-	/* Find the middle sample point */
-	sortItem* sortTrack = sortHead;
-	for(int i = 0; i < (size + 1) / 2; i++)
-		sortTrack = sortTrack->next;
-
-	/* If even number of samples return average of two middle numbers */
-	if (size % 2 == 0)
-		return (sortTrack->value + sortTrack->next->value) / 2.0;
-
-	return sortTrack->value;
+	return 1;
 }
 #endif
