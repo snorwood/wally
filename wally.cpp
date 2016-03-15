@@ -85,7 +85,13 @@ Orientation Wally::getOrientation(XYZ acc) {
 	if (acc.y > GRAVITY_THRESHOLD)
 		return UP;
 
-	return FLAT;
+	if (acc.z > GRAVITY_THRESHOLD && abs(acc.x) < 1 && abs(acc.y) < 1)
+		return FLAT;
+
+	if (acc.y > 0)
+		return A_UP;
+
+	return A_DOWN;
 }
 
 /*
@@ -96,7 +102,7 @@ Parameters:
 Returns:		float theta
 */
 float Wally::getTheta(XYZ acc) {
-	return asin(acc.x / -GRAVITY);
+	return asin(-acc.x / GRAVITY);
 }
 
 /********** ULTRASONIC ***********/
@@ -126,8 +132,8 @@ float Wally::readUltrasonic(int address) {
 	if (us == 0)
 		return US_MAX_DISTANCE + 1;
 	
-	if (us < US_MIN_DISTANCE)
-		return 0;
+	// if (us < US_MIN_DISTANCE)
+	// 	return 0;
 	
 	return us;
 }
