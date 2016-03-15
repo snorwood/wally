@@ -60,5 +60,7 @@ int main() {
 	a->insertSample(421);
 	test.output(a);
 
+	delete a;
+
 	return 0;
 }
