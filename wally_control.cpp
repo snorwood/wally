@@ -8,14 +8,6 @@
 
 /*
 Function:		WallyControl
-Description:	Initializes control loop
-*/
-WallyControl::WallyControl(Wally* wally) {
-	this->wally = wally;
-}
-
-/*
-Function:		WallyControl
 Description:	Initializes control loop with parameters
 Parameters:
 	vp:			Vertical proportional gain
@@ -62,7 +54,7 @@ void WallyControl::update() {
 	rm_acc_x.insertSample(acc.x);
 	rm_acc_y.insertSample(acc.y);
 	rm_acc_z.insertSample(acc.z);
-
+	
 	rm_us_f.insertSample(wally->readUltrasonic(0));
 	rm_us_r.insertSample(wally->readUltrasonic(1));
 	rm_us_l.insertSample(wally->readUltrasonic(2));
