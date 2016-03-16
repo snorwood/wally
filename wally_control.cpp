@@ -111,7 +111,7 @@ Description:	Run in your loop to give robot vertical control
 */
 void WallyControl::verticalControl(float speed_r, float theta_r) {
 	/* Collect Loop Variables */
-	XYZ acc = readAccelerometer();
+	XYZ acc = wally->readAccelerometer();
 	theta = wally->getTheta(acc);
 	err2 = theta_r - theta;
 	derr_dt = (err2-err1)/(t2-t1);

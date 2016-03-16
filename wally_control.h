@@ -9,7 +9,7 @@
 #include "rolling_median.h"
 
 const float MOTOR_LIMIT = 100;
-const float INPUT_LIMIT = 60;
+const float INPUT_LIMIT = 80;
 const int MOTOR_CORRECT = 3;
 
 
