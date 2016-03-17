@@ -64,9 +64,9 @@ XYZ Wally::readAccelerometer() {
 	XYZ accData;
 	
 	mma->read();
-	accData.x = convertAccelerometer(mma->x) - accelerometerOffset.x;
-	accData.y = convertAccelerometer(mma->y) - accelerometerOffset.y;
-	accData.z = convertAccelerometer(mma->z) - accelerometerOffset.z; 
+	accData.x = convertAccelerometer(mma->x); // - accelerometerOffset.x;
+	accData.y = convertAccelerometer(mma->y); // - accelerometerOffset.y;
+	accData.z = convertAccelerometer(mma->z); // - accelerometerOffset.z; 
 
 	return accData;
 }
@@ -79,13 +79,13 @@ Parameters:
 Returns:		Orientation
 */
 Orientation Wally::getOrientation(XYZ acc) {
-	if(acc.y < -GRAVITY_THRESHOLD && abs(acc.z) < 1)
+	if(acc.y < -GRAVITY_THRESHOLD && abs(acc.z) < 2)
 		return DOWN;
 
-	if (acc.y > GRAVITY_THRESHOLD && abs(acc.z) < 1)
+	if (acc.y > GRAVITY_THRESHOLD && abs(acc.z) < 2)
 		return UP;
 
-	if (acc.z > GRAVITY_THRESHOLD && abs(acc.x) < 1 && abs(acc.y) < 1)
+	if (acc.z > GRAVITY_THRESHOLD && abs(acc.y) < 2)
 		return FLAT;
 
 	if (acc.y > 0)

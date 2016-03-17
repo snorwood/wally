@@ -8,12 +8,25 @@
 #include "wally.h"
 #include "rolling_median.h"
 
+/* Vertical Control Constants */
 const float MOTOR_LIMIT = 100;
 const float INPUT_LIMIT = 80;
-const int MOTOR_CORRECT = 3;
 
-
-float defaultThetaR(float t);
+/* Horizontal Control Constants */
+const float TURN_DELAY = 350/90.0;
+const float TURN_SPEED = 30;
+const float STRAIGHT_MAX = 30;
+const float STRAIGHT_MIN = 20;
+const float BASE_CLOSE = 20;
+const float BASE_DIFFERENTIAL_L = 40;
+const float BASE_DIFFERENTIAL_R = 30;
+	
+enum DIR {
+	LEFT,
+	RIGHT,
+	FRONT,
+	NONE
+};
 
 /*
 Class: WallyControl
@@ -22,10 +35,11 @@ Description: Provides high level control loops and functions for Wally
 class WallyControl {
 public:
 	/* Constructor */
-	WallyControl(Wally* wally, float vp=500, float vd=1, float hp=1.8, int sampleSize=3);
+	WallyControl(Wally* wally, float vp=500, float vd=1, float hd=0.7, int sampleSize=3);
 
 	/* Loop Update */
-	void begin();
+	void beginVertical();
+	void beginHorizontal();
 	void update();
 	
 	/* Accessor Functions */
@@ -37,7 +51,9 @@ public:
 	void verticalControl(float speed, float theta_r);
 
 	/* Horizontal Control */
-	void horizontalControl(float x_r);
+	void horizontalControl();
+	void turn(DIR direction, float degrees);
+	DIR findBase();
 
 private:
 	/* Robot */
@@ -46,12 +62,12 @@ private:
 	/* Loop Parameters */
 	float vp = 500;
 	float vd = 1;
-	float hp = 1.8;
+	float hd = 0.7;
 
 	/* Time */
 	int t1 = 0;		// Time previous
 	int t2 = 0;		// Time current
-	int sampleSize = 10;
+	int sampleSize = 3;
 
 	/* Motor Inputs */
 	float ul;	// Right motor input
@@ -62,6 +78,15 @@ private:
 	float err1 = 0;			// Theta error previous
 	float err2 = 0;			// Theta error new
 	float derr_dt = 0;		// delta error / dt
+
+	/* Horizontal Control Loop Variables */
+	float us_left_1;
+	float us_left_2;
+	float d_left;
+	float us_right_1;
+	float us_right_2;
+	float d_right;
+
 
 	/* Rolling Medians */
 	RollingMedian<float>* rm_acc_x;

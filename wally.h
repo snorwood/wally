@@ -34,7 +34,7 @@ const int US_CONVERT = 58;			// Convert from us to cm
 
 /* Define Accelerometer Constants */
 const float ADC_CONVERT = 8 * 9.81 / 16384;	// Convert from 14-bit count to m/s^2
-const float GRAVITY_THRESHOLD = 9.00;
+const float GRAVITY_THRESHOLD = 8.5;
 const float GRAVITY = 9.81;
 
 /* Define Button Constants */
