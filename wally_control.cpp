@@ -55,8 +55,8 @@ void WallyControl::beginHorizontal() {
 	/* Initialize derivative terms */
 	us_left_1 = readUltrasonic(2);
 	us_right_1 = readUltrasonic(1);
-	ul = 25;
-	ur = 25;
+	ul = 0;
+	ur = 0;
 }
 
 void WallyControl::update() {
@@ -161,7 +161,7 @@ void WallyControl::verticalControl(float speed_r, float theta_r) {
 Function:		horizontalControl
 Description:	Run in your loop to give robot horizontal control
 */
-void WallyControl::horizontalControl() {
+void WallyControl::horizontalControl(float speed) {
 	/* Get sensor input*/
 	us_left_2 = readUltrasonic(2);
 	us_right_2 = readUltrasonic(1);
@@ -193,7 +193,7 @@ void WallyControl::horizontalControl() {
     }
 
     /* Set motors */
-    wally->setMotors(ul, ur);
+    wally->setMotors(speed + ul, speed + ur);
 }
 
 void WallyControl::turn(DIR direction, float degrees) {
@@ -221,12 +221,12 @@ DIR WallyControl::findBase() {
 		return FRONT;
 	}
 
-	if (us_left_2 < 35) {
+	if (d_left < -BASE_DIFFERENTIAL_L && d_left > -150) {
 		// Serial.println("LEFT");
 		return LEFT;
 	}
 
-	if (d_right < -BASE_DIFFERENTIAL_R && us_right_2 < 100) {
+	if (d_right < -BASE_DIFFERENTIAL_R && us_right_1 < (200 - us_left_1)) {
 		// Serial.println("RIGHT");
 		return RIGHT;
 	}

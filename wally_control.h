@@ -15,11 +15,11 @@ const float INPUT_LIMIT = 80;
 /* Horizontal Control Constants */
 const float TURN_DELAY = 350/90.0;
 const float TURN_SPEED = 30;
-const float STRAIGHT_MAX = 30;
-const float STRAIGHT_MIN = 20;
+const float STRAIGHT_MAX = 7;
+const float STRAIGHT_MIN = -7;
 const float BASE_CLOSE = 20;
-const float BASE_DIFFERENTIAL_L = 40;
-const float BASE_DIFFERENTIAL_R = 30;
+const float BASE_DIFFERENTIAL_L = 30;
+const float BASE_DIFFERENTIAL_R = 40;
 	
 enum DIR {
 	LEFT,
@@ -51,7 +51,7 @@ public:
 	void verticalControl(float speed, float theta_r);
 
 	/* Horizontal Control */
-	void horizontalControl();
+	void horizontalControl(float TURN_SPEED);
 	void turn(DIR direction, float degrees);
 	DIR findBase();
 
